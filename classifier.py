@@ -15,12 +15,13 @@ from keras.layers import Flatten
 from keras.layers import Dense
 
 EPOCHS=20
-IMG_SIZE=50
+IMG_SIZE=256
 DATA_DIR='dataset'
 TEST_DATA_FRACTION=0.2
 
 def transform_img(img):
     return transform.resize(img,(IMG_SIZE,IMG_SIZE,img.shape[2]))
+
     
 
 def load_data():
@@ -46,7 +47,7 @@ def load_data():
 def cnn():
     classifier=Sequential()
 
-    classifier.add(Convolution2D(filters=32,kernel_size=(3,3),input_shape=(IMG_SIZE,IMG_SIZE,3),activation='relu'))    
+    classifier.add(Convolution2D(filters=16,kernel_size=(3,3),input_shape=(IMG_SIZE,IMG_SIZE,3),activation='relu'))    
     classifier.add(MaxPooling2D(pool_size=(2,2)))
     
     classifier.add(Convolution2D(filters=32,kernel_size=(3,3),input_shape=(IMG_SIZE,IMG_SIZE,3),activation='relu'))    
@@ -67,7 +68,7 @@ train_data, test_data, train_labels, test_labels = train_test_split(data, labels
 
 idx = np.random.permutation(train_data.shape[0])
 classifier = cnn()
-classifier.fit(train_data[idx], train_labels[idx],verbose=2, epochs==EPOCHS)
+classifier.fit(train_data[idx], train_labels[idx],verbose=2, epochs=EPOCHS)
 
 preds = np.argmax(classifier.predict(test_data), axis=1)
 test_labels = np.argmax(test_labels, axis=1)
